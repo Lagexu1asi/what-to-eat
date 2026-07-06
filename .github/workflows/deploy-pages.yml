@@ -9,6 +9,7 @@ permissions:
   contents: read # 读取代码
   pages: write # 部署Pages站点
   id-token: write # 关键：开启OIDC令牌，消除当前报错
+  actions: write # 删除残留 artifact 所需权限
 
 jobs:
   build-and-deploy:
@@ -32,11 +33,23 @@ jobs:
       - name: Build Vite project
         run: npm run build
 
-      # 删除可能残留的旧 artifact(避免 re-run 时出现多个同名 artifact 导致部署失败)
+      # 删除当前 run 里可能残留的旧 github-pages artifact
+      # 避免 re-run 时 upload-pages-artifact 产生多个同名 artifact 导致 deploy 失败
       - name: Delete stale artifact
-        uses: actions/delete-artifact@v4
-        with:
-          name: github-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "清理当前 run 残留的 github-pages artifact..."
+          ids=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts \
+            --paginate -q '.artifacts[] | select(.name=="github-pages") | .id' 2>/dev/null || true)
+          if [ -z "$ids" ]; then
+            echo "无残留 artifact,跳过"
+          else
+            for id in $ids; do
+              echo "删除 artifact id=$id"
+              gh api --method DELETE repos/${{ github.repository }}/actions/artifacts/$id || true
+            done
+          fi
 
       # 上传dist打包产物
       - name: Upload build artifact
