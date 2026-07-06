@@ -16,6 +16,10 @@ export default function App() {
   const [dishes, setDishes] = useLocalStorage('we_dishes', DEFAULT_DISHES)
   const [orders, setOrders] = useLocalStorage('we_orders', {})
   const [lastReset, setLastReset] = useLocalStorage('we_lastReset', getTodayKey())
+  // 右上角徽标文字:用户可自行修改,持久化到本地
+  const [badgeText, setBadgeText] = useLocalStorage('we_badge', '糊小厨')
+  const [editingBadge, setEditingBadge] = useState(false)
+  const [badgeDraft, setBadgeDraft] = useState('')
   const [sheetOpen, setSheetOpen] = useState(false)
 
   /** 每日自动重置:日期变更时清空今日点单 */
@@ -26,6 +30,19 @@ export default function App() {
       setLastReset(today)
     }
   }, [])
+
+  /** 进入徽标编辑态:用当前文字初始化草稿 */
+  const startEditBadge = useCallback(() => {
+    setBadgeDraft(badgeText)
+    setEditingBadge(true)
+  }, [badgeText])
+
+  /** 提交徽标修改:去空白、限制长度、空值回退默认 */
+  const commitBadge = useCallback(() => {
+    const v = badgeDraft.trim().slice(0, 6)
+    setBadgeText(v || '糊小厨')
+    setEditingBadge(false)
+  }, [badgeDraft, setBadgeText])
 
   /** 增加某菜品的点单份数 */
   const incOrder = useCallback(
@@ -93,7 +110,27 @@ export default function App() {
             <p className="app-date">{formatDateZh()}</p>
           </div>
           <div className="header-badge">
-            <span className="header-badge-text">家的味道</span>
+            {editingBadge ? (
+              <input
+                className="header-badge-input"
+                value={badgeDraft}
+                autoFocus
+                maxLength={6}
+                onChange={(e) => setBadgeDraft(e.target.value)}
+                onBlur={commitBadge}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') commitBadge()
+                }}
+              />
+            ) : (
+              <span
+                className="header-badge-text"
+                onClick={startEditBadge}
+                title="点击修改"
+              >
+                {badgeText}
+              </span>
+            )}
           </div>
         </div>
         <TabNav active={tab} onChange={setTab} />

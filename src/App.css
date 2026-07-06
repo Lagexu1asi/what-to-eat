@@ -52,9 +52,25 @@
 }
 
 .header-badge-text {
+  cursor: pointer;
   user-select: none;
   display: inline-block;
   min-width: 2em;
+  text-align: center;
+}
+
+/* 徽标编辑输入框:复用 badge 视觉,去除浏览器默认样式 */
+.header-badge-input {
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--terracotta);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  width: 6em;
   text-align: center;
 }
 
