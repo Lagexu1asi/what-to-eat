@@ -1,4 +1,4 @@
-/* RecipeModule.css —— 菜谱模块专用样式:工具栏与 toast 反馈条 */
+/* RecipeModule.css —— 菜谱模块专用样式:工具栏 */
 
 /* 工具栏:导出 / 导入按钮横向排列,吸顶在菜谱顶部 */
 .recipe-toolbar {
@@ -43,37 +43,4 @@
 .tool-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
-}
-
-/* toast 反馈条:浮在工具栏下方,2.5s 自动消失 */
-.recipe-toast {
-  margin: 0 16px 12px;
-  padding: 9px 14px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 500;
-  animation: toastIn 0.2s ease-out;
-}
-
-.recipe-toast.success {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #c8e6c9;
-}
-
-.recipe-toast.error {
-  background: #fbe9e7;
-  color: #c62828;
-  border: 1px solid #ffccbc;
-}
-
-@keyframes toastIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

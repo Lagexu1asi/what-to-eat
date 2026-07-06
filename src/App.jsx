@@ -3,6 +3,7 @@ import TabNav from './components/TabNav'
 import MenuModule from './components/MenuModule'
 import RecipeModule from './components/RecipeModule'
 import AddDishSheet from './components/AddDishSheet'
+import DataExchangeSheet from './components/DataExchangeSheet'
 import { useLocalStorage, getTodayKey, formatDateZh } from './hooks/useLocalStorage'
 import { DEFAULT_DISHES, DISH_CATEGORIES } from './data/defaults'
 import './App.css'
@@ -21,6 +22,8 @@ export default function App() {
   const [editingBadge, setEditingBadge] = useState(false)
   const [badgeDraft, setBadgeDraft] = useState('')
   const [sheetOpen, setSheetOpen] = useState(false)
+  // 数据交换面板:'export' 显示可复制的 JSON, 'import' 粘贴 JSON 导入,null 关闭
+  const [dataSheet, setDataSheet] = useState(null)
 
   /** 每日自动重置:日期变更时清空今日点单 */
   useEffect(() => {
@@ -102,39 +105,30 @@ export default function App() {
   )
 
   /**
-   * 导出菜谱为 JSON 文件
-   * 文件名带日期,形如 what-to-eat-recipes-2026-07-06.json
+   * 导出菜谱为 JSON 文本字符串(供文本框展示与复制)
+   * @returns {string} 格式化后的 JSON 文本
    */
   const exportDishes = useCallback(() => {
-    const json = JSON.stringify(dishes, null, 2)
-    const blob = new Blob([json], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `what-to-eat-recipes-${getTodayKey()}.json`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    return JSON.stringify(dishes, null, 2)
   }, [dishes])
 
   /**
-   * 导入 JSON 菜谱文件,覆盖现有菜谱库
+   * 从 JSON 文本字符串导入菜谱,覆盖现有菜谱库
    * 校验:必须是数组,且每项至少有 name 字段;补全缺失字段与 id
    * 导入后同步清理失效的今日点单(已不存在的菜品 id)
-   * @param {File} file - 用户选择的 JSON 文件
-   * @returns {Promise<{ok: boolean, msg: string}>} 导入结果,用于 UI 提示
+   * 注意:本函数不弹 confirm,由调用方(UI 层)自行确认后再调用
+   * @param {string} text - 用户粘贴的 JSON 文本
+   * @returns {{ok: boolean, msg: string, count?: number}} 导入结果
    */
   const importDishes = useCallback(
-    async (file) => {
+    (text) => {
       try {
-        const text = await file.text()
         const data = JSON.parse(text)
         if (!Array.isArray(data)) {
-          return { ok: false, msg: '文件格式错误:应为菜谱数组' }
+          return { ok: false, msg: '格式错误:应为菜谱数组 [...]' }
         }
         if (data.length === 0) {
-          return { ok: false, msg: '文件中没有菜谱数据' }
+          return { ok: false, msg: '文本中没有菜谱数据' }
         }
         // 校验+补全字段
         const seenIds = new Set()
@@ -159,12 +153,6 @@ export default function App() {
           }
         })
 
-        // 二次确认:导入会覆盖现有菜谱
-        const confirmed = window.confirm(
-          `即将导入 ${normalized.length} 道菜谱,将覆盖当前 ${dishes.length} 道菜谱。\n确定继续?`
-        )
-        if (!confirmed) return { ok: false, msg: '已取消导入' }
-
         setDishes(normalized)
         // 清理失效订单
         const validIds = new Set(normalized.map((d) => d.id))
@@ -175,12 +163,12 @@ export default function App() {
           })
           return next
         })
-        return { ok: true, msg: `成功导入 ${normalized.length} 道菜谱` }
+        return { ok: true, msg: `成功导入 ${normalized.length} 道菜谱`, count: normalized.length }
       } catch (err) {
         return { ok: false, msg: `导入失败: ${err.message || 'JSON 解析错误'}` }
       }
     },
-    [dishes, setDishes, setOrders]
+    [dishes.length, setDishes, setOrders]
   )
 
   return (
@@ -235,8 +223,8 @@ export default function App() {
             onDelete={deleteDish}
             onUpdate={updateDish}
             onAdd={() => setSheetOpen(true)}
-            onExport={exportDishes}
-            onImport={importDishes}
+            onExport={() => setDataSheet('export')}
+            onImport={() => setDataSheet('import')}
           />
         )}
       </main>
@@ -247,6 +235,16 @@ export default function App() {
           dishes={dishes}
           onAdd={handleAddDish}
           onClose={() => setSheetOpen(false)}
+        />
+      )}
+
+      {dataSheet && (
+        <DataExchangeSheet
+          mode={dataSheet}
+          dishCount={dishes.length}
+          onExport={exportDishes}
+          onImport={importDishes}
+          onClose={() => setDataSheet(null)}
         />
       )}
     </div>

@@ -1,0 +1,69 @@
+/* DataExchangeSheet.css —— 菜谱数据交换面板(导出/导入)专用样式 */
+/* 基础 sheet 样式复用 AddDishSheet.css(JS 层 import 引入) */
+
+/* 提示文字 */
+.data-hint {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+/* 大文本域:比普通表单更高,容纳较长 JSON */
+.data-textarea {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  color: var(--ink);
+  background: var(--bg);
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+  /* 手机端默认不缩放:让文本框自适应宽度 */
+  max-width: 100%;
+}
+
+.data-textarea:focus {
+  border-color: var(--terracotta-light);
+}
+
+.data-textarea::placeholder {
+  color: var(--muted);
+}
+
+/* 导入结果反馈条 */
+.data-result {
+  margin-top: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  animation: dataResultIn 0.2s ease-out;
+}
+
+.data-result.ok {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.data-result.err {
+  background: #fbe9e7;
+  color: #c62828;
+  border: 1px solid #ffccbc;
+}
+
+@keyframes dataResultIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
