@@ -101,6 +101,88 @@ export default function App() {
     [setDishes]
   )
 
+  /**
+   * 导出菜谱为 JSON 文件
+   * 文件名带日期,形如 what-to-eat-recipes-2026-07-06.json
+   */
+  const exportDishes = useCallback(() => {
+    const json = JSON.stringify(dishes, null, 2)
+    const blob = new Blob([json], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `what-to-eat-recipes-${getTodayKey()}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }, [dishes])
+
+  /**
+   * 导入 JSON 菜谱文件,覆盖现有菜谱库
+   * 校验:必须是数组,且每项至少有 name 字段;补全缺失字段与 id
+   * 导入后同步清理失效的今日点单(已不存在的菜品 id)
+   * @param {File} file - 用户选择的 JSON 文件
+   * @returns {Promise<{ok: boolean, msg: string}>} 导入结果,用于 UI 提示
+   */
+  const importDishes = useCallback(
+    async (file) => {
+      try {
+        const text = await file.text()
+        const data = JSON.parse(text)
+        if (!Array.isArray(data)) {
+          return { ok: false, msg: '文件格式错误:应为菜谱数组' }
+        }
+        if (data.length === 0) {
+          return { ok: false, msg: '文件中没有菜谱数据' }
+        }
+        // 校验+补全字段
+        const seenIds = new Set()
+        const normalized = data.map((d, i) => {
+          if (!d || typeof d !== 'object' || !d.name) {
+            throw new Error(`第 ${i + 1} 条菜谱缺少 name 字段`)
+          }
+          let id = d.id && !seenIds.has(d.id) ? d.id : `${Date.now()}-${i}`
+          seenIds.add(id)
+          return {
+            id,
+            name: String(d.name),
+            category: d.category || '其他',
+            ingredients: Array.isArray(d.ingredients)
+              ? d.ingredients.map((ing) => ({
+                  name: String(ing?.name ?? ''),
+                  amount: Number(ing?.amount) || 1,
+                  unit: String(ing?.unit ?? '份')
+                }))
+              : [],
+            steps: Array.isArray(d.steps) ? d.steps.map((s) => String(s)) : []
+          }
+        })
+
+        // 二次确认:导入会覆盖现有菜谱
+        const confirmed = window.confirm(
+          `即将导入 ${normalized.length} 道菜谱,将覆盖当前 ${dishes.length} 道菜谱。\n确定继续?`
+        )
+        if (!confirmed) return { ok: false, msg: '已取消导入' }
+
+        setDishes(normalized)
+        // 清理失效订单
+        const validIds = new Set(normalized.map((d) => d.id))
+        setOrders((prev) => {
+          const next = {}
+          Object.entries(prev).forEach(([id, qty]) => {
+            if (validIds.has(id)) next[id] = qty
+          })
+          return next
+        })
+        return { ok: true, msg: `成功导入 ${normalized.length} 道菜谱` }
+      } catch (err) {
+        return { ok: false, msg: `导入失败: ${err.message || 'JSON 解析错误'}` }
+      }
+    },
+    [dishes, setDishes, setOrders]
+  )
+
   return (
     <div className="app">
       <header className="app-header">
@@ -153,6 +235,8 @@ export default function App() {
             onDelete={deleteDish}
             onUpdate={updateDish}
             onAdd={() => setSheetOpen(true)}
+            onExport={exportDishes}
+            onImport={importDishes}
           />
         )}
       </main>
