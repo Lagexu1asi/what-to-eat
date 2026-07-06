@@ -1,0 +1,23 @@
+{
+  "name": "what-to-eat",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "家庭点餐小网页 · 今天吃什么 PWA",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:single": "vite build --config vite.single.config.js",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "vite-plugin-pwa": "^0.21.1",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}

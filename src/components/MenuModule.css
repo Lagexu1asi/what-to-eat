@@ -1,0 +1,123 @@
+/* ===== 菜单概览卡片 ===== */
+.menu-overview {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 0.4s ease;
+}
+
+.menu-overview-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.menu-overview-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.menu-overview-num--accent {
+  color: var(--terracotta);
+}
+
+.menu-overview-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.menu-overview-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--line);
+}
+
+/* ===== 今日备菜清单卡片 ===== */
+.prep-card {
+  margin-top: 24px;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-top: 3px solid var(--sage);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 0.4s ease 0.1s both;
+}
+
+.prep-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.prep-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+}
+
+.prep-count {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.prep-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prep-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-warm);
+  border-radius: var(--radius-sm);
+  animation: fadeUp 0.25s ease both;
+}
+
+.prep-row:nth-child(2) { animation-delay: 0.03s; }
+.prep-row:nth-child(3) { animation-delay: 0.06s; }
+.prep-row:nth-child(4) { animation-delay: 0.09s; }
+.prep-row:nth-child(5) { animation-delay: 0.12s; }
+.prep-row:nth-child(6) { animation-delay: 0.15s; }
+.prep-row:nth-child(7) { animation-delay: 0.18s; }
+.prep-row:nth-child(8) { animation-delay: 0.21s; }
+
+.prep-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.prep-amt {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--sage);
+}
+
+.prep-unit {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-left: 3px;
+}

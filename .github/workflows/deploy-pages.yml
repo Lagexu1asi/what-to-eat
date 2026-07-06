@@ -1,0 +1,43 @@
+name: Deploy PWA to GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # 支持手动触发流水线
+
+# 全局权限（必须加，解决OIDC缺失报错）
+permissions:
+  contents: read # 读取代码
+  pages: write # 部署Pages站点
+  id-token: write # 关键：开启OIDC令牌，消除当前报错
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22 # 消除Node20弃用警告，用新版Node
+
+      - name: Install dependencies
+        run: npm install
+
+      # 修复vite权限报错
+      - name: Fix bin execute permission
+        run: chmod -R +x node_modules/.bin
+
+      - name: Build Vite project
+        run: npm run build
+
+      # 上传dist打包产物
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      # 官方部署Pages
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

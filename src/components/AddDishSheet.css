@@ -1,0 +1,256 @@
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 42, 38, 0.4);
+  z-index: 90;
+  animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(2px);
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--paper);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 12px 20px calc(24px + var(--safe-bottom));
+  z-index: 100;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--line);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+.sheet-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 18px;
+  letter-spacing: 0.03em;
+}
+
+.sheet-field {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.sheet-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+}
+
+/* 标签行:左侧文案 + 右侧操作按钮 */
+.sheet-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sheet-label-row .sheet-label {
+  margin-bottom: 0;
+}
+
+/* 导入步骤切换按钮 */
+.import-toggle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--terracotta);
+  background: var(--terracotta-soft);
+  padding: 4px 10px;
+  border-radius: 10px;
+  transition: all 0.15s;
+}
+
+.import-toggle:active {
+  transform: scale(0.95);
+}
+
+/* 导入面板 */
+.import-panel {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  background: var(--bg-warm);
+  border-radius: var(--radius-sm);
+  animation: fadeIn 0.2s ease;
+}
+
+.import-hint {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.import-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.import-empty {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* 菜谱选择 chip */
+.import-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 16px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  transition: all 0.15s;
+}
+
+.import-chip:active {
+  transform: scale(0.96);
+}
+
+.import-chip-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.import-chip-meta {
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--bg);
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+
+/* 已导入过的菜谱:绿色标记 */
+.import-chip--done {
+  border-color: var(--sage-light);
+  background: var(--sage-soft);
+}
+
+.import-chip--done .import-chip-name {
+  color: var(--sage);
+}
+
+.sheet-input,
+.sheet-textarea {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--bg);
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.sheet-input:focus,
+.sheet-textarea:focus {
+  border-color: var(--terracotta-light);
+}
+
+.sheet-input::placeholder,
+.sheet-textarea::placeholder {
+  color: var(--muted);
+}
+
+/* 标签选择 */
+.sheet-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sheet-tag {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: var(--bg-warm);
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.sheet-tag--active {
+  color: var(--terracotta);
+  background: var(--terracotta-soft);
+  border-color: var(--terracotta-light);
+  font-weight: 600;
+}
+
+/* 按钮 */
+.sheet-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.sheet-btn {
+  flex: 1;
+  padding: 13px 0;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.sheet-btn--cancel {
+  background: var(--bg-warm);
+  color: var(--ink-soft);
+}
+
+.sheet-btn--ok {
+  background: var(--terracotta);
+  color: #fff;
+}
+
+.sheet-btn--ok:disabled {
+  opacity: 0.4;
+}
+
+.sheet-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* 动画 */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

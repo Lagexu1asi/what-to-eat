@@ -1,0 +1,7 @@
+{
+  "assets": {
+    "directory": "dist",
+    "singlePage": true,
+    "notFoundStrategy": "index",
+  },
+}

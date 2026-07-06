@@ -1,0 +1,325 @@
+.recipe-item {
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+}
+
+.recipe-item--open {
+  box-shadow: var(--shadow-md);
+}
+
+.recipe-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.recipe-head-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.recipe-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.recipe-cat {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.recipe-head-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.recipe-meta {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: var(--bg-warm);
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+
+.recipe-chevron {
+  color: var(--muted);
+  transition: transform 0.25s ease;
+}
+
+.recipe-chevron--open {
+  transform: rotate(180deg);
+}
+
+/* 展开详情 */
+.recipe-detail {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  animation: fadeUp 0.25s ease;
+}
+
+.recipe-section {
+  margin-bottom: 14px;
+}
+
+.recipe-section:last-child {
+  margin-bottom: 0;
+}
+
+.recipe-section-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+}
+
+/* section 标题行(带右侧编辑按钮) */
+.recipe-section-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.recipe-section-bar .recipe-section-label {
+  margin-bottom: 0;
+}
+
+/* 编辑切换按钮 */
+.recipe-edit-toggle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--terracotta);
+  background: var(--terracotta-soft);
+  padding: 4px 10px;
+  border-radius: 10px;
+  transition: all 0.15s;
+}
+
+.recipe-edit-toggle:active {
+  transform: scale(0.95);
+}
+
+/* 备料清单 */
+.recipe-ing-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recipe-ing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--bg-warm);
+  border-radius: var(--radius-sm);
+}
+
+/* 编辑态备料输入框 */
+.recipe-ing-input {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--paper);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.recipe-ing-input:focus {
+  border-color: var(--terracotta-light);
+}
+
+.recipe-ing-input--name {
+  flex: 1;
+  min-width: 0;
+}
+
+.recipe-ing-input--amt {
+  width: 56px;
+  text-align: center;
+}
+
+.recipe-ing-input--unit {
+  width: 56px;
+  text-align: center;
+}
+
+/* 备料/步骤行的删除按钮 */
+.recipe-row-del {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--terracotta);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.recipe-row-del:active {
+  transform: scale(0.9);
+  background: var(--terracotta-soft);
+}
+
+/* 添加行按钮 */
+.recipe-add-row {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sage);
+  background: var(--sage-soft);
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.recipe-add-row:active {
+  transform: scale(0.97);
+}
+
+.recipe-ing-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.recipe-ing-amt {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--sage);
+}
+
+.recipe-ing-unit {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-left: 3px;
+}
+
+/* 烹饪步骤 */
+.recipe-steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recipe-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.recipe-step-num {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* 编辑态步骤:textarea + 删除按钮横向布局 */
+.recipe-step-edit {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.recipe-step-input {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink);
+  background: var(--paper);
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 44px;
+}
+
+.recipe-step-input:focus {
+  border-color: var(--terracotta-light);
+}
+
+.recipe-step-text {
+  flex: 1;
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.5;
+  padding-top: 2px;
+}
+
+.recipe-empty {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 6px 10px;
+}
+
+/* 操作区 */
+.recipe-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+}
+
+.recipe-act {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: var(--bg-warm);
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.recipe-act--del {
+  color: var(--terracotta);
+}
+
+/* 完成编辑按钮:绿色高亮 */
+.recipe-act--done {
+  color: #fff;
+  background: var(--sage);
+  font-weight: 600;
+}
+
+.recipe-act:active {
+  transform: scale(0.95);
+}
