@@ -32,6 +32,12 @@ jobs:
       - name: Build Vite project
         run: npm run build
 
+      # 删除可能残留的旧 artifact(避免 re-run 时出现多个同名 artifact 导致部署失败)
+      - name: Delete stale artifact
+        uses: actions/delete-artifact@v4
+        with:
+          name: github-pages
+
       # 上传dist打包产物
       - name: Upload build artifact
         uses: actions/upload-pages-artifact@v3
